@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/Yandex-Practicum/go1fl-sprint5-final/internal/actioninfo"
-	"github.com/Yandex-Practicum/go1fl-sprint5-final/internal/daysteps"
-	"github.com/Yandex-Practicum/go1fl-sprint5-final/internal/personaldata"
-	"github.com/Yandex-Practicum/go1fl-sprint5-final/internal/trainings"
+	"go-sprint5-final/internal/actioninfo"
+	"go-sprint5-final/internal/daysteps"
+	"go-sprint5-final/internal/personaldata"
+	"go-sprint5-final/internal/trainings"
 )
 
 func main() {
