@@ -32,12 +32,12 @@ const (
 // Создайте функцию ниже.
 func RunningSpentCalories(steps int, weight float64, duration time.Duration) float64 {
 	if weight <= 0 {
-		errors.New("error. Weight must be greater than 0")
+		errors.New("weight must be greater than 0")
 		return 0
 	}
 
 	if duration <= 0 {
-		errors.New("error. Duration must be greater than 0")
+		errors.New("duration must be greater than 0")
 		return 0
 	}
 
@@ -71,7 +71,7 @@ func WalkingSpentCalories(steps int, weight, height float64, duration time.Durat
 	}
 
 	if duration <= 0 {
-		errors.New("error. Duration must be greater than 0")
+		errors.New("duration must be greater than 0")
 		return 0
 	}
 

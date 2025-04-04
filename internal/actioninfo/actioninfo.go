@@ -2,8 +2,6 @@ package actioninfo
 
 import (
 	"fmt"
-	_ "go-sprint5-final/internal/daysteps"
-	_ "go-sprint5-final/internal/trainings"
 )
 
 // Интерфейс DataParser
@@ -24,6 +22,7 @@ func Info(dataset []string, dp DataParser) {
 		actionInfo, err := dp.ActionInfo()
 		if err != nil {
 			fmt.Println(err)
+			continue
 		}
 		fmt.Println(actionInfo)
 	}

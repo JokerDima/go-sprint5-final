@@ -3,11 +3,12 @@ package daysteps
 import (
 	"errors"
 	"fmt"
-	"go-sprint5-final/internal/personaldata"
-	"go-sprint5-final/internal/spentenergy"
 	"strconv"
 	"strings"
 	"time"
+
+	"go-sprint5-final/internal/personaldata"
+	"go-sprint5-final/internal/spentenergy"
 )
 
 const (
@@ -24,12 +25,12 @@ type DaySteps struct {
 // Метод Parse()
 func (ds *DaySteps) Parse(datastring string) (err error) {
 	if len(datastring) == 0 {
-		return errors.New("error data. No data for conversion")
+		return errors.New("no data for conversion")
 	}
 
 	dataParse := strings.Split(datastring, ",")
 	if len(dataParse) != 2 {
-		return errors.New("error conversion. The data has not been converted correctly")
+		return errors.New("the data has not been converted correctly")
 	}
 
 	//Шаги
@@ -38,7 +39,7 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 		return err
 	}
 	if steps < 0 {
-		return errors.New("error data. Negative value Steps")
+		return errors.New("negative value Steps")
 	}
 	//Сохряняем значение шагов в структуру Training
 	ds.Steps = steps
@@ -49,7 +50,7 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 		return err
 	}
 	if duration < 0 {
-		return errors.New("error data. Negative value Duration")
+		return errors.New("negative value Duration")
 	}
 	//Сохряняем значение длительности в структуру Training
 	ds.Duration = duration
@@ -61,7 +62,7 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 func (ds DaySteps) ActionInfo() (string, error) {
 	duration := ds.Duration
 	if duration == 0 {
-		return "", errors.New("error data. Zero value Duration")
+		return "", errors.New("zero value Duration")
 	}
 
 	steps := ds.Steps
@@ -69,7 +70,7 @@ func (ds DaySteps) ActionInfo() (string, error) {
 
 	calories := spentenergy.WalkingSpentCalories(steps, ds.Weight, ds.Height, duration)
 	if calories == 0 {
-		return "", errors.New("error data. Zero value calories")
+		return "", errors.New("zero value calories")
 	}
 
 	title := fmt.Sprintf("Количество шагов: %v.\nДистанция составила %.2f км.\nВы сожгли %.2f ккал.", steps, distance, calories)

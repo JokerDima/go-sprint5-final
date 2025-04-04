@@ -3,11 +3,12 @@ package trainings
 import (
 	"errors"
 	"fmt"
-	"go-sprint5-final/internal/personaldata"
-	"go-sprint5-final/internal/spentenergy"
 	"strconv"
 	"strings"
 	"time"
+
+	"go-sprint5-final/internal/personaldata"
+	"go-sprint5-final/internal/spentenergy"
 )
 
 // Структура Training
@@ -21,12 +22,12 @@ type Training struct {
 // Метод Parse()
 func (t *Training) Parse(datastring string) (err error) {
 	if len(datastring) == 0 {
-		return errors.New("error data. No data for conversion")
+		return errors.New("no data for conversion")
 	}
 
 	dataParse := strings.Split(datastring, ",")
 	if len(dataParse) != 3 {
-		return errors.New("error conversion. The data has not been converted correctly")
+		return errors.New("the data has not been converted correctly")
 	}
 
 	//Шаги
@@ -35,24 +36,20 @@ func (t *Training) Parse(datastring string) (err error) {
 		return err
 	}
 	if steps < 0 {
-		return errors.New("error data. Negative value Steps")
+		return errors.New("negative value Steps")
 	}
 	//Сохряняем значение шагов в структуру Training
 	t.Steps = steps
 
 	//Тип тренировки
-	var trainingType string
-	switch dataParse[1] {
-	case "Бег":
-		trainingType = "Бег"
-	case "Ходьба":
-		trainingType = "Ходьба"
-	default:
-		trainingType = "Неизвестный тип тренировки"
-		return errors.New("error data. Unknown training type")
+	if dataParse[1] == "Бег" {
+		t.TrainingType = "Бег"
+	} else if dataParse[1] == "Ходьба" {
+		t.TrainingType = "Ходьба"
+	} else {
+		t.TrainingType = "Неизвестный тип тренировки"
+		return errors.New("unknown training type")
 	}
-	//Сохряняем значение тренировки в структуру Training
-	t.TrainingType = trainingType
 
 	//Длительность
 	duration, err := time.ParseDuration(dataParse[2])
@@ -60,7 +57,7 @@ func (t *Training) Parse(datastring string) (err error) {
 		return err
 	}
 	if duration < 0 {
-		return errors.New("error data. Negative value Duration")
+		return errors.New("negative value Duration")
 	}
 	//Сохряняем значение длительности в структуру Training
 	t.Duration = duration
@@ -74,27 +71,25 @@ func (t Training) ActionInfo() (string, error) {
 	distance := spentenergy.Distance(steps)
 	duration := t.Duration
 	if duration == 0 {
-		return "", errors.New("error data. Zero value Duration")
+		return "", errors.New("zero value Duration")
 	}
 
 	meanSpeed := spentenergy.MeanSpeed(steps, duration)
-	trainingType := t.TrainingType
-	if trainingType == "Неизвестный тип тренировки" {
-		return "", errors.New("error type. Unknown training type")
-	}
 
 	var calories float64
-	switch trainingType {
+	switch t.TrainingType {
 	case "Бег":
 		calories = spentenergy.RunningSpentCalories(steps, t.Weight, duration)
 	case "Ходьба":
 		calories = spentenergy.WalkingSpentCalories(steps, t.Weight, t.Height, duration)
+	default:
+		return "", errors.New("unknown training type")
 	}
 	if calories == 0 {
-		return "", errors.New("error data. Zero value calories")
+		return "", errors.New("zero value calories")
 	}
 
-	title := fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f", trainingType, duration.Hours(), distance, meanSpeed, calories)
+	title := fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f", t.TrainingType, duration.Hours(), distance, meanSpeed, calories)
 
 	return title, nil
 }
